@@ -1,5 +1,6 @@
 #include "streamer.h"
 #include "memory/heap/kheap.h"
+#include "config.h"
 
 struct disk_stream* diskstreamer_new(int disk_id)
 {
@@ -24,7 +25,7 @@ int diskstreamer_seek(struct disk_stream* stream, int pos)
 int diskstreamer_read(struct disk_stream* stream, void* out, int total)
 {
     // pos = 513이라 가정 시 sector는 1, offset은 1
-    int sector = stream->pos / 	PEACHOS_SECTOR_SIZE;
+    int sector = stream->pos / PEACHOS_SECTOR_SIZE;
     int offset = stream->pos % PEACHOS_SECTOR_SIZE;
     char buf[PEACHOS_SECTOR_SIZE];
 

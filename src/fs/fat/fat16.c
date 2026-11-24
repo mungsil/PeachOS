@@ -2,7 +2,7 @@
 #include "string/string.h"
 #include "status.h"
 
-int fat16_reslove(struct disk* disk);
+int fat16_resolve(struct disk* disk);
 void* fat16_open(struct disk* disk, struct path_part* path, FILE_MODE mode);
 
 struct filesystem fat16_fs = 
@@ -17,6 +17,7 @@ struct filesystem* fat16_init()
     return &fat16_fs;
 }
 
+// Determine whether this filesystem can be used with the given disk.
 int fat16_resolve(struct disk* disk)
 {
     return 0;

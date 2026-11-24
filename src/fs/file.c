@@ -46,7 +46,7 @@ static void fs_static_load()
 // this function will load all the available file systems that we are aware of
 void fs_load()
 {
-    memset(filesystems, 0, size(filesystems));
+    memset(filesystems, 0, sizeof(filesystems));
     fs_static_load();
 }
 
