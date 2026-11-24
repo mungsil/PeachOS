@@ -5,6 +5,7 @@
 #include "memory/heap/kheap.h"
 #include "memory/paging/paging.h"
 #include "string/string.h"
+#include "fs/file.h"
 #include "disk/disk.h"
 #include "fs/pparser.h"
 #include "disk/streamer.h"
@@ -75,6 +76,9 @@ void kernel_main()
     // Initialize the heap
     kheap_init();
 
+    // Initialize filesystems
+    fs_init();
+
     // Search and initialize the disks
     disk_search_and_init();
 
@@ -87,27 +91,13 @@ void kernel_main()
     // Switch to kernel paging chunk
     paging_switch(paging_4gb_chunk_get_directory(kernel_chunk));
 
-    // char* ptr = kzalloc(4096);
-    // argument: uint32_t *directory, void *virt, uint32_t val
-    // paging_set(paging_4gb_chunk_get_directory(kernel_chunk), (void*)0x1000, (uint32_t)ptr | PAGING_ACCESS_FROM_ALL | PAGING_IS_PRESENT | PAGING_IS_WRITEABLE);
-
-    // qemu 실행을 통해서 아래 코드가 실행됐음을 확인하는 부분 이해 안감
-    // char buf[512];
-    // disk_read_sector(0, 1, buf);
-
-    // Enable paging
     enable_paging();
-
-    // Modifying the page table의 19:25초 이해 안감.
-    // 21:39초도 완벽히 이해 안감
 
     // Enable the system interrupts
     enable_interrupts();
 
-    struct disk_stream* stream = diskstreamer_new(0);
-    diskstreamer_seek(stream, 0x201);
-    unsigned char c = 0;
-    diskstreamer_read(stream, &c, 1);
+    char buf[20];
+    strcpy(buf, "hello!");
     while(1) {}
 }
 
