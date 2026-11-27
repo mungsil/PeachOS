@@ -78,6 +78,44 @@ struct fat_directory_item
     uint32_t filesize;  
 }__attribute__((packed));
 
+struct fat_directory
+{
+    struct fat_directory_item* item;
+    int total;
+    int sector_pos;
+    int ending_sector_pos;
+}
+
+struct fat_item
+{
+    union
+    {
+        struct fat_directory_item* item;
+	struct fat_directory* directory;
+    };
+
+    FAT_ITEM_TYPE type;
+};
+
+struct fat_item_descriptor
+{
+    struct fat_item* item;
+    uint32_t pos;
+}
+
+struct fat_private
+{
+    struct fat_h header;
+    struct fat_directory root_directory;
+
+    // Used to stream data clusters
+    struct disk_stream* cluster_read_stream;
+    // Used to stream the file allocation table
+    struct disk_stream* fat_read_stream;
+
+    // Used in situations where we stream the directory
+    struct disk_stream* directory_stream;
+}
 
 int fat16_resolve(struct disk* disk);
 void* fat16_open(struct disk* disk, struct path_part* path, FILE_MODE mode);
@@ -104,3 +142,5 @@ void* fat16_open(struct disk* disk, struct path_part* path, FILE_MODE mode)
 {
     return 0;
 }
+
+
